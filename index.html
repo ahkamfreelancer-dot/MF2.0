@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mamboly Force - Ta force intérieure">
+    <meta name="theme-color" content="#E8D5F2">
+    <title>Mamboly Force - Ta Force Intérieure</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🦋</text></svg>">
+</head>
+<body>
+    <!-- Message de bienvenue initial (s'affiche une seule fois) -->
+    <div id="welcome-overlay" class="welcome-overlay">
+        <div class="welcome-card">
+            <h1>🦋 Bienvenue</h1>
+            <p class="welcome-message">Chère amie,</p>
+            <p>Cette application est un cadeau pour toi. Un espace rien qu'à toi, où tu peux être toi-même sans jugement.</p>
+            <p>Il n'y a pas de bonne ou mauvaise façon d'utiliser cette app. Fais-en ce que tu veux. Saute des jours si nécessaire. Reviens quand tu es prête.</p>
+            <p class="welcome-signature">💜 Avec tout mon soutien</p>
+            <button class="btn-primary" onclick="closeWelcome()">Commencer mon chemin</button>
+        </div>
+    </div>
+
+    <!-- Menu latéral -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>🦋 Mamboly</h2>
+            <button class="close-sidebar" onclick="toggleSidebar()">×</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" onclick="navigateTo('accueil')" class="active">🏠 Accueil</a></li>
+            <li><a href="#" onclick="navigateTo('ma-force')">💪 Ma Force</a></li>
+            <li><a href="#" onclick="navigateTo('self-care')">✨ Prendre Soin de Moi</a></li>
+            <li><a href="#" onclick="navigateTo('maison')">🏡 Ma Maison</a></li>
+            <li><a href="#" onclick="navigateTo('carriere')">💼 Ma Carrière</a></li>
+            <li><a href="#" onclick="navigateTo('mon-chemin')">🦋 Mon Chemin</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" onclick="navigateTo('parametres')">⚙️ Paramètres</a>
+        </div>
+    </nav>
+
+    <!-- En-tête principal -->
+    <header class="main-header">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <h1 class="app-title">Mamboly Force</h1>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        
+        <!-- ========== SECTION 1: ACCUEIL ========== -->
+        <section id="accueil" class="section active">
+            <div class="hero-section">
+                <h2>Bonjour <span id="user-name-display">toi</span> 💜</h2>
+                <p class="date-display" id="current-date"></p>
+            </div>
+
+            <!-- Citation du jour -->
+            <div class="card quote-card">
+                <h3>✨ Citation du jour</h3>
+                <blockquote id="daily-quote"></blockquote>
+                <button class="btn-secondary" onclick="changeQuote()">Nouvelle citation</button>
+            </div>
+
+            <!-- Humeur du jour -->
+            <div class="card">
+                <h3>😊 Comment te sens-tu aujourd'hui ?</h3>
+                <div class="mood-selector">
+                    <button class="mood-btn" onclick="selectMood('😢', 'Très difficile')">😢</button>
+                    <button class="mood-btn" onclick="selectMood('😔', 'Difficile')">😔</button>
+                    <button class="mood-btn" onclick="selectMood('😐', 'Neutre')">😐</button>
+                    <button class="mood-btn" onclick="selectMood('🙂', 'Bien')">🙂</button>
+                    <button class="mood-btn" onclick="selectMood('😊', 'Très bien')">😊</button>
+                </div>
+                <p id="mood-message" class="mood-message"></p>
+            </div>
+
+            <!-- Petite victoire -->
+            <div class="card">
+                <h3>🎉 Ma petite victoire aujourd'hui</h3>
+                <textarea id="daily-victory" placeholder="Même minuscule, elle compte ! 
+Exemples :
+• J'ai pris une douche
+• J'ai souri à mes enfants
+• J'ai posté une candidature
+• J'ai cuisiné un repas"></textarea>
+                <button class="btn-primary" onclick="saveVictory()">💾 Sauvegarder</button>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="victories-count">0</div>
+                    <div class="stat-label">Victoires</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="days-tracked">0</div>
+                    <div class="stat-label">Jours suivis</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="career-progress">0%</div>
+                    <div class="stat-label">Carrière</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 2: MA FORCE ========== -->
+        <section id="ma-force" class="section">
+            <h2 class="section-title">💪 Ma Force</h2>
+            
+            <!-- Citations par catégorie -->
+            <div class="card">
+                <h3>✨ Citations qui donnent de la force</h3>
+                <div class="category-tabs">
+                    <button class="tab-btn active" onclick="showQuotes('force')">Force</button>
+                    <button class="tab-btn" onclick="showQuotes('espoir')">Espoir</button>
+                    <button class="tab-btn" onclick="showQuotes('confiance')">Confiance</button>
+                    <button class="tab-btn" onclick="showQuotes('courage')">Courage</button>
+                    <button class="tab-btn" onclick="showQuotes('amour')">Amour</button>
+                    <button class="tab-btn" onclick="showQuotes('resilience')">Résilience</button>
+                </div>
+                <div id="quotes-container" class="quotes-list"></div>
+            </div>
+
+            <!-- Journal privé -->
+            <div class="card">
+                <h3>📖 Mon Journal Privé</h3>
+                <p class="helper-text">Écris tout ce que tu ressens. Personne ne lira jamais. Tu peux tout dire : peur, colère, tristesse, espoir.</p>
+                <textarea id="private-journal" placeholder="Écris librement, sans jugement..."></textarea>
+                <button class="btn-primary" onclick="saveJournal()">💾 Sauvegarder</button>
+                <button class="btn-secondary" onclick="viewJournalEntries()">📚 Voir mes entrées</button>
+            </div>
+
+            <!-- Exercices rapides -->
+            <div class="card">
+                <h3>🧘 Exercices 5 minutes</h3>
+                <div class="exercises-grid">
+                    <button class="exercise-btn" onclick="startExercise('respiration')">
+                        <span class="exercise-icon">🌬️</span>
+                        <span>Respiration</span>
+                    </button>
+                    <button class="exercise-btn" onclick="startExercise('gratitude')">
+                        <span class="exercise-icon">🙏</span>
+                        <span>3 Gratitudes</span>
+                    </button>
+                    <button class="exercise-btn" onclick="startExercise('affirmations')">
+                        <span class="exercise-icon">💝</span>
+                        <span>Affirmations</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 3: PRENDRE SOIN DE MOI ========== -->
+        <section id="self-care" class="section">
+            <h2 class="section-title">✨ Prendre Soin de Moi</h2>
+
+            <!-- Routine quotidienne -->
+            <div class="card">
+                <h3>📋 Ma Routine Bien-être Quotidienne</h3>
+                <p class="helper-text">Coche au moins 3 items par jour. Prendre soin de toi n'est pas égoïste.</p>
+                <div class="checklist" id="daily-routine">
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>Prendre une douche</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>M'habiller dans une tenue où je me sens bien</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>Boire suffisamment d'eau</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>Manger correctement</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>Bouger 10 minutes</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('routine')">
+                        <span>Prendre 5 minutes pour moi</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Activités ressourçantes -->
+            <div class="card">
+                <h3>🌸 Activités Ressourçantes</h3>
+                <div class="activities-grid" id="activities-list">
+                    <div class="activity-card">📚 Lire</div>
+                    <div class="activity-card">🛁 Prendre un bain</div>
+                    <div class="activity-card">🎬 Regarder un film</div>
+                    <div class="activity-card">📞 Appeler une amie</div>
+                    <div class="activity-card">💅 Me faire les ongles</div>
+                    <div class="activity-card">🌱 Jardiner</div>
+                </div>
+                <button class="btn-secondary" onclick="addActivity()">+ Ajouter une activité</button>
+            </div>
+
+            <!-- Objectifs de la semaine -->
+            <div class="card">
+                <h3>🎯 Mes Objectifs Bien-être cette Semaine</h3>
+                <div id="weekly-goals"></div>
+                <button class="btn-secondary" onclick="addWeeklyGoal()">+ Ajouter un objectif</button>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 4: MA MAISON ========== -->
+        <section id="maison" class="section">
+            <h2 class="section-title">🏡 Ma Maison</h2>
+
+            <!-- To-do lists -->
+            <div class="todo-tabs">
+                <button class="tab-btn active" onclick="showTodoList('today')">Aujourd'hui</button>
+                <button class="tab-btn" onclick="showTodoList('week')">Cette semaine</button>
+                <button class="tab-btn" onclick="showTodoList('important')">Important</button>
+            </div>
+
+            <div class="card">
+                <div id="todo-today" class="todo-container">
+                    <h3>✅ Aujourd'hui (Max 3-5 tâches)</h3>
+                    <div id="tasks-today"></div>
+                    <div class="add-task-form">
+                        <input type="text" id="new-task-today" placeholder="Nouvelle tâche...">
+                        <button class="btn-primary" onclick="addTask('today')">+ Ajouter</button>
+                    </div>
+                </div>
+
+                <div id="todo-week" class="todo-container" style="display:none;">
+                    <h3>📅 Cette semaine</h3>
+                    <div id="tasks-week"></div>
+                    <div class="add-task-form">
+                        <input type="text" id="new-task-week" placeholder="Nouvelle tâche...">
+                        <button class="btn-primary" onclick="addTask('week')">+ Ajouter</button>
+                    </div>
+                </div>
+
+                <div id="todo-important" class="todo-container" style="display:none;">
+                    <h3>⭐ Important</h3>
+                    <div id="tasks-important"></div>
+                    <div class="add-task-form">
+                        <input type="text" id="new-task-important" placeholder="Nouvelle tâche...">
+                        <button class="btn-primary" onclick="addTask('important')">+ Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organisation famille -->
+            <div class="card">
+                <h3>👨‍👩‍👧 Organisation Famille</h3>
+                <div class="family-section">
+                    <h4>Mes enfants</h4>
+                    <div id="children-list"></div>
+                    <button class="btn-secondary" onclick="addChild()">+ Ajouter un enfant</button>
+                </div>
+                <div class="family-section">
+                    <h4>Maman</h4>
+                    <textarea id="maman-notes" placeholder="Notes sur ce que maman peut m'aider à faire..."></textarea>
+                    <button class="btn-primary" onclick="saveMamanNotes()">💾 Sauvegarder</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 5: MA CARRIÈRE ========== -->
+        <section id="carriere" class="section">
+            <h2 class="section-title">💼 Ma Carrière</h2>
+
+            <!-- LinkedIn Checklist -->
+            <div class="card">
+                <h3>🔗 Optimisation LinkedIn - 10 Étapes</h3>
+                <div class="checklist" id="linkedin-checklist">
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Photo de profil professionnelle</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Photo de couverture</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Titre impactant</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Section "À propos" complétée</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Expériences détaillées</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Formation ajoutée</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Compétences (10 minimum)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Recommandations obtenues</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Publications régulières</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('linkedin')">
+                        <span>✓ Réseau actif (connexions hebdo)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Routine quotidienne recherche -->
+            <div class="card">
+                <h3>🎯 Ma Routine Quotidienne de Recherche</h3>
+                <div class="checklist" id="job-search-routine">
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('job-search')">
+                        <span>🔍 Consulter 5 offres</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('job-search')">
+                        <span>📧 Postuler à 2 minimum</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('job-search')">
+                        <span>💼 Optimiser 1 élément LinkedIn</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('job-search')">
+                        <span>📚 Me former 30 minutes</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('job-search')">
+                        <span>🤝 3 nouvelles connexions LinkedIn</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Suivi des candidatures -->
+            <div class="card">
+                <h3>📊 Suivi de mes Candidatures</h3>
+                <div id="applications-list"></div>
+                <button class="btn-primary" onclick="addApplication()">+ Ajouter une candidature</button>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 6: MON CHEMIN ========== -->
+        <section id="mon-chemin" class="section">
+            <h2 class="section-title">🦋 Mon Chemin</h2>
+            <p class="section-subtitle">Chaque petit pas est une victoire.</p>
+
+            <!-- Les 6 étapes émotionnelles -->
+            <div class="card">
+                <h3>💜 Les 6 Étapes Émotionnelles</h3>
+                <p class="helper-text">Il n'y a pas d'ordre. Tu peux revenir en arrière. Tu peux sauter des étapes. C'est OK.</p>
+                
+                <div class="stages-container">
+                    <div class="stage-card">
+                        <h4>🌀 1. Choc et déni</h4>
+                        <p>"Ce n'est pas possible"</p>
+                        <p class="stage-message">Tu ne réalises pas encore. C'est normal, prends ton temps.</p>
+                    </div>
+                    
+                    <div class="stage-card">
+                        <h4>🔥 2. Colère</h4>
+                        <p>"Pourquoi moi ?"</p>
+                        <p class="stage-message">La colère est saine. Exprime-la (dans ton journal, en sport...).</p>
+                    </div>
+                    
+                    <div class="stage-card">
+                        <h4>🤝 3. Marchandage</h4>
+                        <p>"Et si..."</p>
+                        <p class="stage-message">Tu cherches des solutions impossibles. Ces pensées passent.</p>
+                    </div>
+                    
+                    <div class="stage-card">
+                        <h4>😢 4. Tristesse</h4>
+                        <p>"Les larmes coulent"</p>
+                        <p class="stage-message">C'est nécessaire. Pleurer libère.</p>
+                    </div>
+                    
+                    <div class="stage-card">
+                        <h4>☮️ 5. Acceptation</h4>
+                        <p>"C'est ainsi"</p>
+                        <p class="stage-message">Pas oublier, mais faire la paix. Tu commences à respirer.</p>
+                    </div>
+                    
+                    <div class="stage-card">
+                        <h4>🌱 6. Reconstruction</h4>
+                        <p>"Tu vois un futur"</p>
+                        <p class="stage-message">Tu redeviens toi (en mieux). La vie reprend des couleurs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aspects pratiques -->
+            <div class="card">
+                <h3>📋 Aspects Pratiques de la Séparation</h3>
+                <div class="checklist" id="practical-aspects">
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Avocat pour mes droits</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Garde des enfants</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Finances organisées</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>École des enfants</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Soutien de la famille</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Consulter un psychologue</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Logement sécurisé</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('practical')">
+                        <span>Papiers administratifs</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Reconstruction personnelle -->
+            <div class="card">
+                <h3>🌈 Ma Reconstruction Personnelle</h3>
+                <div class="checklist" id="reconstruction">
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Redécouvrir qui je suis</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Reprendre confiance en moi</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Retrouver mes amies</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Redécouvrir mes passions</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Définir mes priorités</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Me projeter dans l'avenir</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" onchange="saveCheckbox('reconstruction')">
+                        <span>Créer de nouveaux souvenirs avec mes enfants</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 7: PARAMÈTRES ========== -->
+        <section id="parametres" class="section">
+            <h2 class="section-title">⚙️ Paramètres</h2>
+
+            <div class="card">
+                <h3>🌓 Apparence</h3>
+                <label class="switch-container">
+                    <span>Mode sombre</span>
+                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                </label>
+            </div>
+
+            <div class="card">
+                <h3>👤 Mes Informations</h3>
+                <label>
+                    <span>Ton prénom (optionnel)</span>
+                    <input type="text" id="user-name-input" placeholder="Comment veux-tu qu'on t'appelle ?" onchange="saveUserName()">
+                </label>
+            </div>
+
+            <div class="card">
+                <h3>💾 Mes Données</h3>
+                <p class="helper-text">Sauvegarde régulièrement tes données (1 fois par semaine recommandé)</p>
+                <button class="btn-primary" onclick="exportData()">📥 Exporter mes données</button>
+                <button class="btn-secondary" onclick="importData()">📤 Importer des données</button>
+                <input type="file" id="import-file" style="display:none" accept=".json" onchange="handleImport(event)">
+            </div>
+
+            <div class="card">
+                <h3>⚠️ Zone de danger</h3>
+                <p class="helper-text">Attention : Cette action est irréversible !</p>
+                <button class="btn-danger" onclick="clearAllData()">🗑️ Effacer toutes mes données</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Chat Kiala Best -->
+    <div id="chat-bubble" class="chat-bubble" onclick="toggleChat()">
+        <span class="chat-bubble-icon">🦋</span>
+    </div>
+
+    <div id="chat-window" class="chat-window">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <h3>Kiala Best</h3>
+                <p class="chat-status">En ligne pour toi</p>
+            </div>
+            <button class="chat-close" onclick="toggleChat()">×</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Parle-moi..." autocomplete="off">
+            <button class="chat-send-btn" onclick="sendMessage()">➔</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
